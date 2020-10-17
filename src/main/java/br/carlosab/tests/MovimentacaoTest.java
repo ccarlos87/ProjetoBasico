@@ -5,13 +5,18 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import Utils.DataUtils;
 import br.carlosab.core.BaseTest;
+import br.carlosab.core.Propriedades;
 import br.carlosab.page.MenuPage;
 import br.carlosab.page.MovimentacaoPage;
 
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MovimentacaoTest extends BaseTest {
 
 	MenuPage menuPage = new MenuPage();
@@ -19,14 +24,14 @@ public class MovimentacaoTest extends BaseTest {
 
 	/* TESTE PARA CRIAR MOVIMENTAÇÃO NUMA CONTA */
 	@Test
-	public void testInserirMovimentacao() {
+	public void test1_InserirMovimentacao() {
 		menuPage.acessaTelaMovimentacao();
 		movimentacaoPage.setDataMovimentacao(DataUtils.obterDataFormatada(new Date()));		//APLICA A DATA ATUAL NO CAMPO DE DATA
 		movimentacaoPage.setDataPagamento(DataUtils.obterDataFormatada(new Date()));		//APLICA A DATA ATUAL NO CAMPO DE DATA
 		movimentacaoPage.setDescricao("Descrição teste");
 		movimentacaoPage.setInteressado("Algum interessado");
 		movimentacaoPage.setValor("200");
-		movimentacaoPage.setConta("Conta do Teste Alterada");
+		movimentacaoPage.setConta(Propriedades.NOME_DA_CONTA_ALTERADA);
 		movimentacaoPage.setStaturPago();
 		movimentacaoPage.salvar();
 		Assert.assertEquals("Movimentação adicionada com sucesso!", movimentacaoPage.obterMensagemSucesso());
@@ -38,7 +43,7 @@ public class MovimentacaoTest extends BaseTest {
 	 * OBRIGATORIOS
 	 */
 	@Test
-	public void testCamposObrigatorios() {
+	public void test2_CamposObrigatorios() {
 		menuPage.acessaTelaMovimentacao();
 		movimentacaoPage.salvar();
 		List<String> erros = movimentacaoPage.obterErros();
@@ -50,6 +55,8 @@ public class MovimentacaoTest extends BaseTest {
 		Assert.assertEquals(6, erros.size());
 	}
 
+	/*
+	 
 	// TESTE QUE REALIZEI DE MANEIRA SIMPLES
 	@Test
 	public void testInserirMovimentacaoComDataFutura() {
@@ -65,10 +72,12 @@ public class MovimentacaoTest extends BaseTest {
 		Assert.assertEquals("Data da Movimentação deve ser menor ou igual à data atual",
 				movimentacaoPage.obterMensagemError());
 	}
+	
+	*/
 
 	// TESTE REALIZADO PELO PROFESSOR COM NOVOS MÉTODOS
 	@Test
-	public void testInserirMovimentacaoDataFutura() {
+	public void test3_InserirMovimentacaoDataFutura() {
 		menuPage.acessaTelaMovimentacao();
 
 		Date dataFutura = DataUtils.obterDataComDiferencaDias(5);
@@ -78,7 +87,7 @@ public class MovimentacaoTest extends BaseTest {
 		movimentacaoPage.setDescricao("Descrição teste");
 		movimentacaoPage.setInteressado("Algum interessado");
 		movimentacaoPage.setValor("200");
-		movimentacaoPage.setConta("Conta do Teste Alterada");
+		movimentacaoPage.setConta(Propriedades.NOME_DA_CONTA_ALTERADA);
 		movimentacaoPage.setStaturPago();
 		movimentacaoPage.salvar();
 		List<String> erros = movimentacaoPage.obterErros();
